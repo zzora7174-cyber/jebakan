@@ -115,8 +115,8 @@
       margin-top: 16px;
     }
 
-    /* Video Fullscreen Player Overlay */
-    #videoOverlay {
+    /* Fullscreen Overlay tanpa Kontrol Video (seperti GIF murni) */
+    #prankOverlay {
       display: none;
       position: fixed;
       top: 0;
@@ -127,9 +127,8 @@
       z-index: 9999;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
     }
-    #prankVideo {
+    #prankMedia, #prankGif {
       max-width: 100%;
       max-height: 100%;
       width: 100%;
@@ -139,23 +138,26 @@
   </style>
 
   <script>
-    // Berikan jeda 3.5 detik lalu tampilkan video
+    // Berikan jeda 3.5 detik lalu tampilkan animasi GIF/video otomatis berulang tanpa tombol kontrol
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         const formContainer = document.querySelector(".form-container");
-        const videoOverlay = document.getElementById("videoOverlay");
-        const prankVideo = document.getElementById("prankVideo");
+        const prankOverlay = document.getElementById("prankOverlay");
+        const prankVideo = document.getElementById("prankMedia");
+        const prankGif = document.getElementById("prankGif");
 
         if (formContainer) formContainer.style.display = "none";
-        if (videoOverlay) videoOverlay.style.display = "flex";
+        if (prankOverlay) prankOverlay.style.display = "flex";
 
+        // Coba putar video tanpa kontrol & looping (muted + playsinline agar langsung autoplay)
         if (prankVideo) {
           prankVideo.play().catch(() => {
-            // Jika autoplay diblokir browser, alihkan langsung ke file video
-            window.location.replace("video/prank.mp4");
+            // Jika autoplay video diblokir browser, langsung tampilkan GIF animasi murni
+            prankVideo.style.display = "none";
+            if (prankGif) prankGif.style.display = "block";
           });
-        } else {
-          window.location.replace("video/prank.mp4");
+        } else if (prankGif) {
+          prankGif.style.display = "block";
         }
       }, 3500);
     });
@@ -182,9 +184,10 @@
     </div>
   </div>
 
-  <!-- Fullscreen Video Overlay -->
-  <div id="videoOverlay">
-    <video id="prankVideo" src="video/prank.mp4" autoplay controls playsinline></video>
+  <!-- Fullscreen Overlay tanpa Kontrol Pemutar (Tampilan Prank Alami) -->
+  <div id="prankOverlay">
+    <video id="prankMedia" src="video/prank.mp4" autoplay loop muted playsinline></video>
+    <img id="prankGif" src="video/prank.gif" alt="Prank Animation" style="display: none;">
   </div>
 </body>
 </html>
