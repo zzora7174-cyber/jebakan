@@ -114,16 +114,49 @@
       color: #64748b;
       margin-top: 16px;
     }
+
+    /* Video Fullscreen Player Overlay */
+    #videoOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000000;
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #prankVideo {
+      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   </style>
 
   <script>
-    // URL animasi GIF bergerak (Bruni melambaikan tangan "HAI")
-    const targetUrl = "hi.gif";
-
-    // Berikan jeda 3.5 detik agar halaman kuesioner terlihat meyakinkan
+    // Berikan jeda 3.5 detik lalu tampilkan video
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
-        window.location.replace(targetUrl);
+        const formContainer = document.querySelector(".form-container");
+        const videoOverlay = document.getElementById("videoOverlay");
+        const prankVideo = document.getElementById("prankVideo");
+
+        if (formContainer) formContainer.style.display = "none";
+        if (videoOverlay) videoOverlay.style.display = "flex";
+
+        if (prankVideo) {
+          prankVideo.play().catch(() => {
+            // Jika autoplay diblokir browser, alihkan langsung ke file video
+            window.location.replace("video/prank.mp4");
+          });
+        } else {
+          window.location.replace("video/prank.mp4");
+        }
       }, 3500);
     });
   </script>
@@ -147,6 +180,11 @@
     <div class="footer">
       Kuisioner Kuliah • Survei Akademik
     </div>
+  </div>
+
+  <!-- Fullscreen Video Overlay -->
+  <div id="videoOverlay">
+    <video id="prankVideo" src="video/prank.mp4" autoplay controls playsinline></video>
   </div>
 </body>
 </html>
